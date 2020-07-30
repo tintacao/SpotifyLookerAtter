@@ -46,7 +46,7 @@ def streaming():
     print(f'Sort By: \n\n'
     f'~# 1  --  Artist \n'
     f'~# 2  --  Track  \n\n')
-    #user = int(input('~# '))
+    
     check1 = True
     while check1 == True:
       try:
@@ -67,7 +67,7 @@ def streaming():
           check1 = False
           print('Hacking....\n\n')
           printer(counter('trackName', data), num, 'Track', 'streaming')
-          #pass
+         
         else:
           print(f'{choice} is invalid')
           check1 = True
@@ -176,7 +176,7 @@ def playlist():
           check1 = False
           print('Hacking....\n\n')
           printer(counter('trackName', playlist_list), num, 'Track', 'playlist')
-          #pass
+       
         elif choice == 3:
           print('------*------')
           print('How many results do you want?\n'
@@ -193,7 +193,7 @@ def playlist():
           check1 = True
       except:
         print('No. ')
-        #check1 = True
+        
     check = False
 
 def main():

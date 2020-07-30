@@ -1,5 +1,4 @@
-### This is a dummy simple code, don't expect anything super robust
-
+# This is simple code, and thus apt to break. srry
 import json
 from collections import Counter
 
@@ -40,7 +39,7 @@ def printer(sorted_list, number, criteria, type):
     print('\n\n')
 
 def streaming():
-  with open('StreamingHistory0.json', encoding="UTF8") as f:
+  with open('StreamingHistory0.json',encoding="UTF8") as f:
     data = json.load(f)
   check = True
   while check == True:
@@ -80,11 +79,20 @@ def streaming():
 def playlist_grabber():
   with open('Playlist1.json',encoding="UTF8") as f:
     data1 = json.load(f)
-  with open('Playlist2.json',encoding="UTF8") as g:
-    data2 = json.load(g)
   data = []
   data.append(data1)
-  data.append(data2)
+  try:
+    with open('Playlist2.json',encoding="UTF8") as g:
+      data2 = json.load(g)
+    data.append(data2)
+  except:
+    pass
+  try:
+    with open('Playlist3.json',encoding="UTF8") as h:
+      data3 = json.load(h)
+    data.append(data3)
+  except:
+    pass
   
   count = 0
   for i in range (2):
@@ -97,6 +105,7 @@ def playlist_grabber():
     print('\n ---------------------------------------- \n')
     print('Please choose a playlist number, or type 000 for ALL')
     playlist_input = int(input('~# '))
+    
     try:
       if playlist_input == 000:
         list = data[0]['playlists'][:] + data[1]['playlists'][:]
@@ -107,8 +116,11 @@ def playlist_grabber():
           return data[0]['playlists'][playlist_input]
           rep = False
         except:
-          return data[1]['playlists'][playlist_input-75]
-          rep = False
+          try:
+            return data[1]['playlists'][playlist_input-len(data[0]['playlists'][:])]
+            rep = False
+          except:
+            return data[2]['playlists'][playlist_input-(len(data[0]['playlists'][:])+len(data[1]['playlists'][:]))]
     except:
       print('\n*** Invalid Playlist Number ***\n')
       rep = True
@@ -143,12 +155,12 @@ def playlist():
     f'~# 1  --  Artist \n'
     f'~# 2  --  Track  \n'
     f'~# 3  --  Albums \n\n')
-    
+   
     check1 = True
     while check1 == True:
       try:
-        choice = (input('~# '))
-        if choice == '1': 
+        choice = int(input('~# '))
+        if choice == 1: 
           print('------*------')  
           print('How many results do you want?\n'
           f'Enter "0" for ALL; Otherwise input a number \n\n')
@@ -156,7 +168,7 @@ def playlist():
           check1 = False 
           print('Hacking....\n\n')
           printer(counter('artistName', playlist_list), num, 'Artist', 'playlist')
-        elif choice == '2':
+        elif choice == 2:
           print('------*------')
           print('How many results do you want?\n'
           f'Enter "0" for ALL; Otherwise input a number \n\n')
@@ -181,21 +193,20 @@ def playlist():
           check1 = True
       except:
         print('No. ')
-        
+        #check1 = True
     check = False
-  
 
 def main():
   repeat = True
   while repeat == True:
     print(f'========**===============**========\n'
-    f'\tSpotify Looker-Atter\n'
+    f'\t\tSpotify Looker-Atter\n'
     f'========**===============**======== \n\n'
     f'~# 1  --  Streaming History \n'
     f'~# 2  --  Playlist Insight  \n')
     check = True
     while check == True:
-      #try:
+      try:
         user = int(input('~# '))
         if user == 1:
           streaming()
@@ -206,8 +217,9 @@ def main():
         else:
           print('Please enter a 1 or 2')
           check = True
-      #except:
-        print('Please enter a number')
+      except:
+        print('Please enter a 1 or 2')
+        check = True
     print('-------------------------------------')
     print('Would you like to run again? (Y / N)')
     rep = input(':: ')
@@ -216,6 +228,6 @@ def main():
     else:
       repeat = False
   
-  
+
 main()
 

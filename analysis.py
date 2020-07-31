@@ -148,9 +148,7 @@ def playlist_grabber():
 def playlist():
   value = playlist_grabber()
   playlist_list = []
-  check = True
   try:
-  
     for item in value['items']:
       try:
         playlist_list.append(item['track'])
@@ -169,51 +167,48 @@ def playlist():
           
           playlist_list.append('** LOCAL SONG -- INFO UNAVAILABLE **')
           
-  while check == True:
-    print('------------------------')
-    print(f'Sort By: \n\n'
-    f'~# 1  --  Artist \n'
-    f'~# 2  --  Track  \n'
-    f'~# 3  --  Albums \n\n')
 
-    while check1 == True:
-      try:
-        choice = int(input('~# '))
-        if choice == 1: 
-          print('\n------*------')  
-          print('How many results do you want?\n'
-          f'Enter "0" for ALL; Otherwise input a number \n')
-          num = int(input('~# '))
-           
-          print('Hacking....\n\n')
-          printer(counter('artistName', playlist_list), num, 'Artist', 'playlist')
-        elif choice == 2:
-          print('\n------*------')
-          print('How many results do you want?\n'
-          f'Enter "0" for ALL; Otherwise input a number \n')
-          num = int(input('~# '))
-          
-          print('Hacking....\n\n')
-          printer(counter('trackName', playlist_list), num, 'Track', 'playlist')
-          #pass
-        elif choice == 3:
-          print('\n------*------')
-          print('How many results do you want?\n'
-          f'Enter "0" for ALL; Otherwise input a number \n')
-          num = int(input('~# '))
-          
-          print('Hacking....\n\n')
-          printer(counter('albumName', playlist_list), num, 'Album', 'playlist')
-        elif isinstance(choice, int) == False:
-          print('Enter a Number')
-          
-        else:
-          print(f'{choice} is invalid')
-          
-      except:
-        print('No. ')
+  print('------------------------')
+  print(f'Sort By: \n\n'
+  f'~# 1  --  Artist \n'
+  f'~# 2  --  Track  \n'
+  f'~# 3  --  Albums \n\n')
+  try:
+    choice = int(input('~# '))
+    if choice == 1: 
+      print('\n------*------')  
+      print('How many results do you want?\n'
+      f'Enter "0" for ALL; Otherwise input a number \n')
+      num = int(input('~# '))
         
-    check = False
+      print('Hacking....\n\n')
+      printer(counter('artistName', playlist_list), num, 'Artist', 'playlist')
+    elif choice == 2:
+      print('\n------*------')
+      print('How many results do you want?\n'
+      f'Enter "0" for ALL; Otherwise input a number \n')
+      num = int(input('~# '))
+      
+      print('Hacking....\n\n')
+      printer(counter('trackName', playlist_list), num, 'Track', 'playlist')
+      #pass
+    elif choice == 3:
+      print('\n------*------')
+      print('How many results do you want?\n'
+      f'Enter "0" for ALL; Otherwise input a number \n')
+      num = int(input('~# '))
+      
+      print('Hacking....\n\n')
+      printer(counter('albumName', playlist_list), num, 'Album', 'playlist')
+    elif isinstance(choice, int) == False:
+      print('Enter a Number')
+      
+    else:
+      print(f'{choice} is invalid')
+      
+  except:
+    print('No. ')
+        
 
 #MAIN
 def main():

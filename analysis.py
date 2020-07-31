@@ -220,7 +220,7 @@ def main():
   repeat = True
   while repeat == True:
     print(f'========**===============**========\n'
-    f'\t\tSpotify Looker-Atter\n'
+    f'\tSpotify Looker-Atter\n'
     f'========**===============**======== \n\n'
     f'~# 1  --  Streaming History \n'
     f'~# 2  --  Playlist Insight  \n')

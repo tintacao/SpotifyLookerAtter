@@ -226,17 +226,17 @@ def main():
     f'~# 2  --  Playlist Insight  \n')
     check = True
  
-      while check == True:
-          user = (input('~# '))
-          if user == '1':
-            streaming()
-            check = False
-          elif user == '2':
-            playlist()
-            check = False
-          else:
-            print('Please enter a 1 or 2')
-            check = True
+    while check == True:
+        user = (input('~# '))
+        if user == '1':
+          streaming()
+          check = False
+        elif user == '2':
+          playlist()
+          check = False
+        else:
+          print('Please enter a 1 or 2')
+          check = True
 
     print('-------------------------------------')
     print('Finished and/or Crashed! Would you like to run again? (Y / N)')

@@ -5,9 +5,9 @@ from datetime import datetime
 import calendar
 day_of_year = int(datetime.today().strftime('%j'))
 current_year = str(datetime.today().strftime("%Y"))
-print(day_of_year)
-print(current_year)
 
+
+#Counts and Ranks
 def counter(value, data):
   list = []
   length = len(data)
@@ -23,6 +23,7 @@ def counter(value, data):
   sort_list = sorted(list_count.items(), key=lambda x: x[1], reverse=True)
   return sort_list
 
+#Prints Results
 def printer(sorted_list, number, criteria, type):
   print('=============***=============')
   if type == 'streaming':
@@ -44,6 +45,7 @@ def printer(sorted_list, number, criteria, type):
         print(f'{item[1]} -- {item[0]}')
     print('\n\n')
 
+#Processes Streaming
 def streaming():
   with open('StreamingHistory0.json',encoding="UTF8") as f:
     data = json.load(f)
@@ -66,39 +68,33 @@ def streaming():
     year_day = int(y.strftime("%j"))
     year_month = y.strftime("%Y-%m")
     if time_choice == '1':
-      
       time_data.append(item)
+
     elif time_choice == '2':
-      
       if (day_of_year >= year_day >= (day_of_year-40)) and(y.strftime("%Y") == current_year):
         time_data.append(item)
     elif time_choice == '3':
       if month_input == year_month:
         time_data.append(item)     
 
-    try:
-      if choice == '1': 
-        print('------*------')  
-        print('How many results do you want?\n'
-        f'Enter "0" for ALL; Otherwise input a number \n')
-        num = int(input('~# '))
-          
-        print('Hacking....\n\n')
-        printer(counter('artistName', time_data), num, 'Artist', 'streaming')
-      elif choice == '2':
-        print('------*------')
-        print('How many results do you want?\n'
-        f'Enter "0" for ALL; Otherwise input a number \n')
-        num = int(input('~# '))
-        
-        print('Hacking....\n\n')
-        printer(counter('trackName', time_data), num, 'Track', 'streaming')
-        
-    except:
-      print('No. You did something wrong')
+  if choice == '1': 
+    print('------*------')  
+    print('How many results do you want?\n'
+    f'Enter "0" for ALL; Otherwise input a number \n')
+    num = int(input('~# '))
+    print('Hacking....\n\n')
+    printer(counter('artistName', time_data), num, 'Artist', 'streaming')
+  elif choice == '2':
+    print('------*------')
+    print('How many results do you want?\n'
+    f'Enter "0" for ALL; Otherwise input a number \n')
+    num = int(input('~# '))
+    print('Hacking....\n\n')
+    printer(counter('trackName', time_data), num, 'Track', 'streaming')    
+
         
 
-
+#Retrieves Requested Playlist
 def playlist_grabber():
   with open('Playlist1.json',encoding="UTF8") as f:
     data1 = json.load(f)
@@ -148,6 +144,7 @@ def playlist_grabber():
       print('\n*** Invalid Playlist Number ***\n')
       rep = True
 
+#Processes the Playlist
 def playlist():
   value = playlist_grabber()
   playlist_list = []
@@ -178,8 +175,7 @@ def playlist():
     f'~# 1  --  Artist \n'
     f'~# 2  --  Track  \n'
     f'~# 3  --  Albums \n\n')
-   
-    
+
     while check1 == True:
       try:
         choice = int(input('~# '))
@@ -219,6 +215,7 @@ def playlist():
         
     check = False
 
+#MAIN
 def main():
   repeat = True
   while repeat == True:
@@ -228,19 +225,21 @@ def main():
     f'~# 1  --  Streaming History \n'
     f'~# 2  --  Playlist Insight  \n')
     check = True
-    while check == True:
-        user = (input('~# '))
-        if user == '1':
-          streaming()
-          check = False
-        elif user == '2':
-          playlist()
-          check = False
-        else:
-          print('Please enter a 1 or 2')
-          check = True
+ 
+      while check == True:
+          user = (input('~# '))
+          if user == '1':
+            streaming()
+            check = False
+          elif user == '2':
+            playlist()
+            check = False
+          else:
+            print('Please enter a 1 or 2')
+            check = True
+
     print('-------------------------------------')
-    print('Would you like to run again? (Y / N)')
+    print('Finished and/or Crashed! Would you like to run again? (Y / N)')
     rep = input(':: ')
     if rep.lower() == 'y':
       repeat = True

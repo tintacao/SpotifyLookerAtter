@@ -2,7 +2,7 @@
 import json
 from collections import Counter
 from datetime import datetime
-import calendar
+
 day_of_year = int(datetime.today().strftime('%j'))
 current_year = str(datetime.today().strftime("%Y"))
 
@@ -47,9 +47,11 @@ def printer(sorted_list, number, criteria, type):
 
 #Processes Streaming
 def streaming():
+  data = []
+  time_data = []
+  
   with open('StreamingHistory0.json',encoding="UTF8") as f:
     data1 = json.load(f)
-  data = []
   data.append(data1)
   try:
     with open('StreamingHistory1.json',encoding="UTF8") as g:
@@ -63,7 +65,19 @@ def streaming():
     data.append(data3)
   except:
     pass
-  time_data = []
+  try:
+    with open('StreamingHistory3.json',encoding="UTF8") as j:
+      data4 = json.load(j)
+    data.append(data4)
+  except:
+    pass
+  try:
+    with open('StreamingHistory4.json',encoding="UTF8") as k:
+      data5 = json.load(k)
+    data.append(data5)
+  except:
+    pass
+  
 
   print(f'Sort By: \n\n'
   f'~# 1  --  Artist \n'

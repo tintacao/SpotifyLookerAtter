@@ -9,7 +9,9 @@ NOTE: If you have more than 3 playlist files or 5 streaming files, the program w
 
 
 After Downloading Spotify Data, extract the files and open the extracted folder.
+
   On Windows: Right-Click, "Extract All"
+  
   On Mac: This is done automatically -- the extracted folder is placed in the same folder as the .zip 
 
 Paste the "analysis.py" file right into the "MyData" folder. Run the file using Terminal, IDLE, CMD, or PowerShell.

@@ -8,11 +8,10 @@ Check out Most Popular stats for Streaming and for Playlists.
 NOTE: If you have more than 3 playlist files or 5 streaming files, the program will not scan all of them. That's only because I figured those were good cut-off points. If you have more files let me know and I will update the code to accomodate them.
 
 
-After Downloading Spotify Data, extract the files and open the extracted folder.
-
-  On Windows: Right-Click, "Extract All"
+  After Downloading Spotify Data, extract the files and open the extracted folder.
   
-  On Mac: This is done automatically -- the extracted folder is placed in the same folder as the .zip 
+    On Windows: Right-Click, "Extract All"
+    On Mac: This is done automatically -- the extracted folder is placed in the same folder as the .zip 
 
 Paste the "analysis.py" file right into the "MyData" folder. Run the file using Terminal, IDLE, CMD, or PowerShell.
 

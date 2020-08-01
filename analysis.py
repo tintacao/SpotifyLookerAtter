@@ -48,7 +48,21 @@ def printer(sorted_list, number, criteria, type):
 #Processes Streaming
 def streaming():
   with open('StreamingHistory0.json',encoding="UTF8") as f:
-    data = json.load(f)
+    data1 = json.load(f)
+  data = []
+  data.append(data1)
+  try:
+    with open('StreamingHistory1.json',encoding="UTF8") as g:
+      data2 = json.load(g)
+    data.append(data2)
+  except:
+    pass
+  try:
+    with open('StreamingHistory2.json',encoding="UTF8") as h:
+      data3 = json.load(h)
+    data.append(data3)
+  except:
+    pass
   time_data = []
 
   print(f'Sort By: \n\n'
@@ -63,19 +77,21 @@ def streaming():
   time_choice = (input('~# '))
   if time_choice == '3':
     month_input = (input('Enter in the MM as YYYY-MM (include the dash) ::  '))
-  for item in data:
-    y = datetime.strptime(item['endTime'], "%Y-%m-%d %H:%M").date()
-    year_day = int(y.strftime("%j"))
-    year_month = y.strftime("%Y-%m")
-    if time_choice == '1':
-      time_data.append(item)
-
-    elif time_choice == '2':
-      if (day_of_year >= year_day >= (day_of_year-40)) and(y.strftime("%Y") == current_year):
+  streaming_length = (len(data))
+  for i in range(streaming_length):
+    for item in data[i]:
+      y = datetime.strptime(item['endTime'], "%Y-%m-%d %H:%M").date()
+      year_day = int(y.strftime("%j"))
+      year_month = y.strftime("%Y-%m")
+      if time_choice == '1':
         time_data.append(item)
-    elif time_choice == '3':
-      if month_input == year_month:
-        time_data.append(item)     
+
+      elif time_choice == '2':
+        if (day_of_year >= year_day >= (day_of_year-40)) and(y.strftime("%Y") == current_year):
+          time_data.append(item)
+      elif time_choice == '3':
+        if month_input == year_month:
+          time_data.append(item)     
 
   if choice == '1': 
     print('------*------')  

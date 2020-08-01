@@ -4,6 +4,7 @@ Check some Spotify Stats
 *USES PYTHON3.8*
 
 Check out Most Popular stats for Streaming and for Playlists. 
+
 NOTE: If you have more than 3 playlist files or 5 streaming files, the program will not scan all of them. That's only because I figured those were good cut-off points. If you have more files let me know and I will update the code to accomodate them.
 
 

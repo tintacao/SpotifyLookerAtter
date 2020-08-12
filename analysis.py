@@ -144,7 +144,7 @@ def playlist_grabber():
     pass
   
   count = 0
-  for i in range (2):
+  for i in range (len(data)):
     for item in data[i].keys():
       for entry in data[i][item]:
         print(f"~#{count} -- {entry['name']}")

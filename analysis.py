@@ -78,6 +78,7 @@ def streaming():
   f'~# 2  --  Search the Past Month\n'
   f'~# 3  --  Search by Specific Month\n'
   f'~# 4  --  Search only {current_year}\n\n')
+  # ADD MONTH FUNCTION
   time_choice = (input('~# '))
   if time_choice == '3':
     month_input = (input('Enter in the MM as YYYY-MM (include the dash) ::  '))

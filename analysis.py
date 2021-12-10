@@ -9,277 +9,291 @@ current_year = str(datetime.today().strftime("%Y"))
 
 #Counts and Ranks
 def counter(value, data):
-  list = []
-  length = len(data)
-  for i in range (length):
-    try:
-      for item in data[i].keys():
-        if item == value:
-          list.append(data[i][item])
-          list_count = dict(Counter(list))
-    except AttributeError:
-      print('Offline Song Found -- No Info Available')
-      pass 
-  sort_list = sorted(list_count.items(), key=lambda x: x[1], reverse=True)
-  
-  return sort_list
+    list = []
+    length = len(data)
+    for i in range (length):
+        try:
+            for item in data[i].keys():
+                if item == value:
+                    list.append(data[i][item])
+                    list_count = dict(Counter(list))
+        except AttributeError:
+            print('Offline Song Found -- No Info Available')
+            pass 
+    sort_list = sorted(list_count.items(), key=lambda x: x[1], reverse=True)
+    
+    return sort_list
 
 #Prints Results
 def printer(sorted_list, number, criteria, type, time):
-  print('=============***=============')
-  if type == 'streaming':
-    print(f'\n\n Plays -- {criteria} \n')
-    if number == 0:
-      for item in sorted_list:
-        print(f'{item[1]} -- {item[0]}')
-      print(f'\nTIME: {time:,} minutes')
-    else:
-      for item in sorted_list[:number]:
-        print(f'{item[1]} -- {item[0]}')
-      print(f'\nTIME: {time:,} minutes')
-    print('\n')
-  elif type == 'playlist':
-    print(f'\n\n Plays -- {criteria} \n')
-    if number == 0:
-      for item in sorted_list:
-        print(f'{item[1]} -- {item[0]}')
-    else:
-      for item in sorted_list[:number]:
-        print(f'{item[1]} -- {item[0]}')
-    print('\n')
+    print('=============***=============')
+    if type == 'streaming':
+        print(f'\n\n Plays -- {criteria} \n')
+        if number == 0:
+            for item in sorted_list:
+                print(f'{item[1]} -- {item[0]}')
+            print(f'\nTIME: {time:,} minutes')
+        else:
+            for item in sorted_list[:number]:
+                print(f'{item[1]} -- {item[0]}')
+            print(f'\nTIME: {time:,} minutes')
+        print('\n')
+    elif type == 'playlist':
+        print(f'\n\n Plays -- {criteria} \n')
+        if number == 0:
+            for item in sorted_list:
+                print(f'{item[1]} -- {item[0]}')
+        else:
+            for item in sorted_list[:number]:
+                print(f'{item[1]} -- {item[0]}')
+        print('\n')
 
 #Processes Streaming
 def streaming():
-  with open('StreamingHistory0.json',encoding="UTF8") as f:
-    data1 = json.load(f)
-  data = []
-  data.append(data1)
-  try:
-    with open('StreamingHistory1.json',encoding="UTF8") as g:
-      data2 = json.load(g)
-    data.append(data2)
-  except:
-    pass
-  try:
-    with open('StreamingHistory2.json',encoding="UTF8") as h:
-      data3 = json.load(h)
-    data.append(data3)
-  except:
-    pass
-  time_data = []
+    with open('StreamingHistory0.json',encoding="UTF8") as f:
+        data1 = json.load(f)
+    data = []
+    data.append(data1)
+    try:
+        with open('StreamingHistory1.json',encoding="UTF8") as g:
+            data2 = json.load(g)
+        data.append(data2)
+    except:
+        pass
+    try:
+        with open('StreamingHistory2.json',encoding="UTF8") as h:
+            data3 = json.load(h)
+        data.append(data3)
+    except:
+        pass
+    time_data = []
 
-  print(f'Sort By: \n\n'
-  f'~# 1  --  Artist \n'
-  f'~# 2  --  Track  \n\n')
-  choice = (input('~# '))
+    print(f'Sort By: \n\n'
+    f'~# 1  --  Artist \n'
+    f'~# 2  --  Track  \n\n')
+    choice = (input('~# '))
 
-  print(f'Time Frame: \n\n'
-  f'~# 1  --  Search the Past Year\n'
-  f'~# 2  --  Search the Past Month\n'
-  f'~# 3  --  Search by Specific Month\n'
-  f'~# 4  --  Search only {current_year}\n\n')
-  # ADD MONTH FUNCTION
-  time_choice = (input('~# '))
-  if time_choice == '3':
-    month_input = (input('Enter in the MM as YYYY-MM (include the dash) ::  '))
-  streaming_length = (len(data))
-  for i in range(streaming_length):		# Starts iterating through Streaming
-    for item in data[i]:			# Each streaming song is a data[i] 
-      y = datetime.strptime(item['endTime'], "%Y-%m-%d %H:%M").date()	# Forces data into standard format
-      year_day = int(y.strftime("%j"))
-      year_month = y.strftime("%Y-%m")
-     
-      if time_choice == '1':
-        time_data.append(item)
+    print(f'Time Frame: \n\n'
+    f'~# 1  --  Search the Past Year\n'
+    f'~# 2  --  Search the Past Month\n'
+    f'~# 3  --  Search by Specific Month\n'
+    f'~# 4  --  Search only {current_year}\n'
+    f'~# 5  --  Monthly Summary\n\n')
+    time_choice = (input('~# '))
+    if time_choice == '3':
+        month_input = (input('Enter in the MM as YYYY-MM (include the dash) ::  '))
+    streaming_length = (len(data))
+    months = {'01':[],'02':[],'03':[],'04':[],'05':[],'06':[],'07':[],'08':[],'09':[],'10':[],'11':[],'12':[]}
 
-      elif time_choice == '2':
-        if (day_of_year >= year_day >= (day_of_year-40)) and(y.strftime("%Y") == current_year):
-          time_data.append(item)
-          
-      elif time_choice == '3':
-        if month_input == year_month:
-          time_data.append(item)     
-      
-      elif time_choice == '4':
-      	if y.strftime("%Y") == current_year:
-      	   time_data.append(item)
-  
-  
-  def time_calc(time_data):
-    time_tuples  = counter('msPlayed', time_data)
-    time_multiplied = []
-    for i in range(len(time_tuples)):
-      multiplied = time_tuples[i][0] * time_tuples[i][1]
-      time_multiplied.append(multiplied)
-    time_ms = sum(time_multiplied)
-    time_listened = time_ms // 1000 // 60
-    return time_listened
-  
-  if choice == '1': 
-    print('------*------')  
-    print('How many results do you want?\n'
-    f'Enter "0" for ALL; Otherwise input a number \n')
-    num = int(input('~# '))
-    print('Hacking....\n\n')
-    #print(f'TIME: {time_calc(time_data):,}')
-    printer(counter('artistName', time_data), num, 'Artist', 'streaming', time_calc(time_data))
-  
-  elif choice == '2':
+    for i in range(streaming_length):       # Starts iterating through Streaming
+        for item in data[i]:            # Each streaming song is a data[i] 
+            y = datetime.strptime(item['endTime'], "%Y-%m-%d %H:%M").date() # Forces data into standard format
+            year_day = int(y.strftime("%j"))
+            year_month = y.strftime("%Y-%m")
+            stream_month = y.strftime("%m")
+         
+            if time_choice == '1':
+                time_data.append(item)
+
+            elif time_choice == '2':
+                if (day_of_year >= year_day >= (day_of_year-40)) and (y.strftime("%Y") == current_year):
+                    time_data.append(item)
+                    
+            elif time_choice == '3':
+                if month_input == year_month:
+                    time_data.append(item)       
+            
+            elif time_choice == '4':
+                if y.strftime("%Y") == current_year:
+                    time_data.append(item)
+            
+            elif time_choice == '5':
+                for month in months.keys():
+                    if month == stream_month:
+                        months[month].append(item)	
+ 
+    def time_calc(time_data):
+        time_tuples  = counter('msPlayed', time_data)
+        time_multiplied = []
+        for i in range(len(time_tuples)):
+            multiplied = time_tuples[i][0] * time_tuples[i][1]
+            time_multiplied.append(multiplied)
+        time_ms = sum(time_multiplied)
+        time_listened = time_ms // 1000 // 60
+        return time_listened
     print('------*------')
-    print('How many results do you want?\n'
-    f'Enter "0" for ALL; Otherwise input a number \n')
+    print('How many results do you want?\n')
+    f'Enter "0" for ALL; Otherwise input a number \n'
     num = int(input('~# '))
     print('Hacking....\n\n')
-    printer(counter('trackName', time_data), num, 'Track', 'streaming', time_calc(time_data))    
+    if time_choice == '5':
+        month_name = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        month_data = list(months.values())
+        count = 0
+        if choice == '1':
+            for every_month in month_name:
+                time_data = month_data[count]
+                printer(counter('artistName', time_data), num, every_month, 'streaming',time_calc(time_data))
+                count+=1
+        elif choice == '2':
+            for every_month in month_name:
+                time_data = month_data[count]
+                printer(counter('trackName', time_data), num, every_month, 'streaming',time_calc(time_data))
+                count+=1
+        else:
+            if choice == '1':
+                printer(counter('artistName', time_data), num, 'Artist', 'streaming',time_calc(time_data))
+            elif choice == '2':
+                printer(counter('trackName', time_data), num, 'Track', 'streaming',time_calc(time_data))
 
-        
+
 
 #Retrieves Requested Playlist
 def playlist_grabber():
-  with open('Playlist1.json',encoding="UTF8") as f:
-    data1 = json.load(f)
-  data = []
-  data.append(data1)
-  try:
-    with open('Playlist2.json',encoding="UTF8") as g:
-      data2 = json.load(g)
-    data.append(data2)
-  except:
-    pass
-  try:
-    with open('Playlist3.json',encoding="UTF8") as h:
-      data3 = json.load(h)
-    data.append(data3)
-  except:
-    pass
-  
-  count = 0
-  for i in range (2):
-    for item in data[i].keys():
-      for entry in data[i][item]:
-        print(f"~#{count} -- {entry['name']}")
-        count += 1
-  rep = True
-  while rep == True:     
-    print('\n ---------------------------------------- \n')
-    print('Please choose a playlist number, or type 000 for ALL')
-    playlist_input = int(input('~# '))
-    
+    with open('Playlist1.json',encoding="UTF8") as f:
+        data1 = json.load(f)
+    data = []
+    data.append(data1)
     try:
-      if playlist_input == 000:
-        list = data[0]['playlists'][:] + data[1]['playlists'][:]
-        rep = False
-        return list
-      else:
-        try:
-          return data[0]['playlists'][playlist_input]
-          rep = False
-        except:
-          try:
-            return data[1]['playlists'][playlist_input-len(data[0]['playlists'][:])]
-            rep = False
-          except:
-            return data[2]['playlists'][playlist_input-(len(data[0]['playlists'][:])+len(data[1]['playlists'][:]))]
+        with open('Playlist2.json',encoding="UTF8") as g:
+            data2 = json.load(g)
+        data.append(data2)
     except:
-      print('\n*** Invalid Playlist Number ***\n')
-      rep = True
+        pass
+    try:
+        with open('Playlist3.json',encoding="UTF8") as h:
+            data3 = json.load(h)
+        data.append(data3)
+    except:
+        pass
+    
+    count = 0
+    for i in range (2):
+        for item in data[i].keys():
+            for entry in data[i][item]:
+                print(f"~#{count} -- {entry['name']}")
+                count += 1
+    rep = True
+    while rep == True:       
+        print('\n ---------------------------------------- \n')
+        print('Please choose a playlist number, or type 000 for ALL')
+        playlist_input = int(input('~# '))
+        
+        try:
+            if playlist_input == 000:
+                list = data[0]['playlists'][:] + data[1]['playlists'][:]
+                rep = False
+                return list
+            else:
+                try:
+                    return data[0]['playlists'][playlist_input]
+                    rep = False
+                except:
+                    try:
+                        return data[1]['playlists'][playlist_input-len(data[0]['playlists'][:])]
+                        rep = False
+                    except:
+                        return data[2]['playlists'][playlist_input-(len(data[0]['playlists'][:])+len(data[1]['playlists'][:]))]
+        except:
+            print('\n*** Invalid Playlist Number ***\n')
+            rep = True
 
 #Processes the Playlist
 def playlist():
-  value = playlist_grabber()
-  playlist_list = []
-  try:
-    for item in value['items']:
-      try:
-        playlist_list.append(item['track'])
-        
-      except TypeError:
-        
-        playlist_list.append('** LOCAL SONG -- INFO UNAVAILABLE **')
-  except:
-    for item in value:
-      
-      for title in item['items']:
-        try:
-          playlist_list.append(title['track'])
-          
-        except TypeError:
-          
-          playlist_list.append('** LOCAL SONG -- INFO UNAVAILABLE **')
-          
+    value = playlist_grabber()
+    playlist_list = []
+    try:
+        for item in value['items']:
+            try:
+                playlist_list.append(item['track'])
+                
+            except TypeError:
+                
+                playlist_list.append('** LOCAL SONG -- INFO UNAVAILABLE **')
+    except:
+        for item in value:
+            
+            for title in item['items']:
+                try:
+                    playlist_list.append(title['track'])
+                    
+                except TypeError:
+                    
+                    playlist_list.append('** LOCAL SONG -- INFO UNAVAILABLE **')
+                    
 
-  print('------------------------')
-  print(f'Sort By: \n\n'
-  f'~# 1  --  Artist \n'
-  f'~# 2  --  Track  \n'
-  f'~# 3  --  Albums \n\n')
-  try:
-    choice = int(input('~# '))
-    if choice == 1: 
-      print('\n------*------')  
-      print('How many results do you want?\n'
-      f'Enter "0" for ALL; Otherwise input a number \n')
-      num = int(input('~# '))
-        
-      print('Hacking....\n\n')
-      printer(counter('artistName', playlist_list), num, 'Artist', 'playlist', 0)
-    elif choice == 2:
-      print('\n------*------')
-      print('How many results do you want?\n'
-      f'Enter "0" for ALL; Otherwise input a number \n')
-      num = int(input('~# '))
-      
-      print('Hacking....\n\n')
-      printer(counter('trackName', playlist_list), num, 'Track', 'playlist', 0)
-      #pass
-    elif choice == 3:
-      print('\n------*------')
-      print('How many results do you want?\n'
-      f'Enter "0" for ALL; Otherwise input a number \n')
-      num = int(input('~# '))
-      
-      print('Hacking....\n\n')
-      printer(counter('albumName', playlist_list), num, 'Album', 'playlist', 0)
-    elif isinstance(choice, int) == False:
-      print('Enter a Number')
-      
-    else:
-      print(f'{choice} is invalid')
-      
-  except:
-    print('No. ')
-        
+    print('------------------------')
+    print(f'Sort By: \n\n'
+    f'~# 1  --  Artist \n'
+    f'~# 2  --  Track  \n'
+    f'~# 3  --  Albums \n\n')
+    try:
+        choice = int(input('~# '))
+        if choice == 1: 
+            print('\n------*------')    
+            print('How many results do you want?\n'
+            f'Enter "0" for ALL; Otherwise input a number \n')
+            num = int(input('~# '))
+                
+            print('Hacking....\n\n')
+            printer(counter('artistName', playlist_list), num, 'Artist', 'playlist', 0)
+        elif choice == 2:
+            print('\n------*------')
+            print('How many results do you want?\n'
+            f'Enter "0" for ALL; Otherwise input a number \n')
+            num = int(input('~# '))
+            
+            print('Hacking....\n\n')
+            printer(counter('trackName', playlist_list), num, 'Track', 'playlist', 0)
+            #pass
+        elif choice == 3:
+            print('\n------*------')
+            print('How many results do you want?\n'
+            f'Enter "0" for ALL; Otherwise input a number \n')
+            num = int(input('~# '))
+            
+            print('Hacking....\n\n')
+            printer(counter('albumName', playlist_list), num, 'Album', 'playlist', 0)
+        elif isinstance(choice, int) == False:
+            print('Enter a Number')
+            
+        else:
+            print(f'{choice} is invalid')
+            
+    except:
+        print('No. ')
+                
 
 #MAIN
 def main():
-  repeat = True
-  while repeat == True:
-    print(f'========**===============**========\n'
-    f'\tSpotify Looker-Atter\n'
-    f'========**===============**======== \n\n'
-    f'~# 1  --  Streaming History \n'
-    f'~# 2  --  Playlist Insight  \n')
-    check = True
+    repeat = True
+    while repeat == True:
+        print(f'========**===============**========\n'
+        f'\tSpotify Looker-Atter\n'
+        f'========**===============**======== \n\n'
+        f'~# 1  --  Streaming History \n'
+        f'~# 2  --  Playlist Insight    \n')
+        check = True
  
-    while check == True:
-        user = (input('~# '))
-        if user == '1':
-          streaming()
-          check = False
-        elif user == '2':
-          playlist()
-          check = False
-        else:
-          print('Please enter a 1 or 2')
-          check = True
+        while check == True:
+                user = (input('~# '))
+                if user == '1':
+                    streaming()
+                    check = False
+                elif user == '2':
+                    playlist()
+                    check = False
+                else:
+                    print('Please enter a 1 or 2')
+                    check = True
 
-    print('-------------------------------------')
-    print('Finished and/or Crashed! Would you like to run again? (Y / N)')
-    rep = input(':: ')
-    if rep.lower() == 'y':
-      repeat = True
-    else:
-      repeat = False
-  
+        print('-------------------------------------')
+        print('Finished and/or Crashed! Would you like to run again? (Y / N)')
+        rep = input(':: ')
+        if rep.lower() == 'y':
+            repeat = True
+        else:
+            repeat = False
+    
 
 main()

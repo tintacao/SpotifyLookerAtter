@@ -94,7 +94,6 @@ def streaming():
          
             if time_choice == '1':
                 time_data.append(item)
-
             elif time_choice == '2':
                 if (day_of_year >= year_day >= (day_of_year-40)) and (y.strftime("%Y") == current_year):
                     time_data.append(item)
@@ -130,7 +129,7 @@ def streaming():
         month_name = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         month_data = list(months.values())
         count = 0
-        if choice == '1':
+        if choice == '1': 
             for every_month in month_name:
                 time_data = month_data[count]
                 printer(counter('artistName', time_data), num, every_month, 'streaming',time_calc(time_data))
@@ -140,11 +139,11 @@ def streaming():
                 time_data = month_data[count]
                 printer(counter('trackName', time_data), num, every_month, 'streaming',time_calc(time_data))
                 count+=1
-        else:
-            if choice == '1':
-                printer(counter('artistName', time_data), num, 'Artist', 'streaming',time_calc(time_data))
-            elif choice == '2':
-                printer(counter('trackName', time_data), num, 'Track', 'streaming',time_calc(time_data))
+    else:
+        if choice == '1':
+            printer(counter('artistName', time_data), num, 'Artist', 'streaming',time_calc(time_data))
+        elif choice == '2':
+            printer(counter('trackName', time_data), num, 'Track', 'streaming',time_calc(time_data))
 
 
 

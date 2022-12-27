@@ -6,13 +6,12 @@ Check some Spotify Stats
 Check out Most Popular stats for Streaming and for Playlists. 
 
 
-  After Downloading Spotify Data, extract the files and open the extracted folder.
+  After Downloading Spotify Data, extract the files.
   
     On Windows: Right-Click, "Extract All"
     On Mac: This is done automatically -- the extracted folder is placed in the same folder as the .zip 
 
-Paste the "analysis.py" file right into the "MyData" folder. Run the file using Terminal, IDLE, CMD, or PowerShell.
-
+Paste the py file into the same parent folder as the data. Make sure Account Data is labeled "MyData" and Extended Streaming History is labeled "MyDataExtended." 
 
 ------------------------------------
 
@@ -50,7 +49,7 @@ Paste the "analysis.py" file right into the "MyData" folder. Run the file using 
   Use Terminal to run the File
     
     Right-click analysis.py, hold the option key and Click "Copy analysis.py as Pathname"
-    Open Terminal, type "cd", add a space, and paste. (It should end with ...\my_spotify_data\MyData. If there is "analysis.py" on the end, delete up to "\MyData")
+    Open Terminal, type "cd", add a space, and paste. (If there is "analysis.py" on the end, delete up to "\MyData")
     Type "python3 analysis.py"
  
 

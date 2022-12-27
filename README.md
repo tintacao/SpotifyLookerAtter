@@ -5,8 +5,6 @@ Check some Spotify Stats
 
 Check out Most Popular stats for Streaming and for Playlists. 
 
-NOTE: If you have more than 3 playlist files or 5 streaming files, the program will not scan all of them. That's only because I figured those were good cut-off points. If you have more files let me know and I will update the code to accomodate them.
-
 
   After Downloading Spotify Data, extract the files and open the extracted folder.
   

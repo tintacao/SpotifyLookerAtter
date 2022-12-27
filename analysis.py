@@ -25,6 +25,11 @@ def counter(value, data):
             pass 
     sort_list = sorted(list_count.items(), key=lambda x: x[1], reverse=True)
     
+    if value[:2] == 'ms':
+        print('DONE')
+    else:
+        print('Almost!')
+    
     return sort_list
 
 # Prints results
@@ -208,7 +213,6 @@ def streaming_ext():
     f'Enter "0" for ALL; Otherwise input a number \n'
     num = int(input('~# '))
     print('Hacking....[this may take some time]\n\n')
-    streaming_length = (len(data))
     
     # Converts JSON into dict, stores in list
     for filename in glob.iglob(f'{directory}/endsong*.json'):
@@ -216,6 +220,8 @@ def streaming_ext():
             filenames = json.load(w)
             data.append(filenames)
     
+    streaming_length = (len(data))
+
     # Iterates through data 
     for i in range(streaming_length):
         for item in data[i]:                                                        # Each streaming song is a data[i] or item

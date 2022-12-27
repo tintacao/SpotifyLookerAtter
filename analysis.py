@@ -59,14 +59,21 @@ def streaming():
         with open(filename, encoding="UTF-8") as f:
             filenames = json.load(f)
             data.append(filenames)
+    
     time_data = []
-
+    summary_data = {}
     print(f'Sort By: \n\n'
     f'~# 1  --  Artist \n'
     f'~# 2  --  Track\n\n')
 
     choice = (input('~# '))
-    
+    if choice == '1':
+        criteria = ('artistName', 'Artist')
+    elif choice == '2':
+        criteria = ('trackName', 'Track')
+    else:
+        print('Wrong Answer!')
+        return
     print(f'Time Frame: \n\n'
     f'~# 1  --  Search the Past Year\n'
     f'~# 2  --  Search the Past Month\n'
@@ -75,8 +82,13 @@ def streaming():
     f'~# 5  --  Monthly Summary\n\n')
     time_choice = (input('~# '))
     if time_choice == '3':
-        month_input = (input('Enter in the MM as YYYY-MM (include the dash) ::  '))
+        month_input = (input('Enter in the MM as YYYY-MM (include the dash)::  '))
         months = {'01':[],'02':[],'03':[],'04':[],'05':[],'06':[],'07':[],'08':[],'09':[],'10':[],'11':[],'12':[]}
+    elif time_choice == '1' or time_choice == '2' or time_choice == '4' or time_choice == '5':
+        pass
+    else:
+        print('Wrong answer!')
+        return
 
     streaming_length = (len(data))
     for i in range(streaming_length):       # Starts iterating through Streaming
@@ -101,48 +113,24 @@ def streaming():
                     time_data.append(item)
             
             elif time_choice == '5':
-                for month in months.keys():
-                    if month == stream_month:
-                        months[month].append(item)	
-    
-    # Calculates total time listened 
-#    def time_calc(time_data):
-#        time_tuples  = counter('msPlayed', time_data)
-#        time_multiplied = []
-#        for i in range(len(time_tuples)):
-#            multiplied = time_tuples[i][0] * time_tuples[i][1]
-#            time_multiplied.append(multiplied)
-#        time_ms = sum(time_multiplied)
-#        time_listened = time_ms // 1000 // 60
-#        return time_listened
-    
-
+                if stream_month not in summary_data.keys():
+                    summary_data[stream_month] = [item]
+                else:
+                    summary_data[stream_month].append(item)
     print('------*------')
     print('How many results do you want?\n')
     f'Enter "0" for ALL; Otherwise input a number \n'
     num = int(input('~# '))
     print('Hacking....\n\n')
     if time_choice == '5':
-        month_name = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-        month_data = list(months.values())
-        count = 0
-        if choice == '1': 
-            for every_month in month_name:
-                time_data = month_data[count]
-                printer(counter('artistName', time_data), num, every_month, 'streaming',time_calc(time_data, time_meta))
-                count+=1
-        elif choice == '2':
-            for every_month in month_name:
-                time_data = month_data[count]
-                printer(counter('trackName', time_data), num, every_month, 'streaming',time_calc(time_data, time_meta))
-                count+=1
+        sumsort = {key:summary_data[key] for key in sorted(summary_data.keys())}
+        for every_month in sumsort.keys():
+            month_name = datetime.strptime(every_month, "%m").strftime("%B")
+            printer(counter(criteria[0], sumsort[every_month]), num, month_name, 'streaming',time_calc(sumsort[every_month], time_meta))
     else:
-        if choice == '1':
-            printer(counter('artistName', time_data), num, 'Artist', 'streaming',time_calc(time_data, time_meta))
-        elif choice == '2':
-            printer(counter('trackName', time_data), num, 'Track', 'streaming',time_calc(time_data, time_meta))
+        printer(counter(criteria[0], time_data), num, criteria[1], 'streaming', time_calc(time_data, time_meta))
 
-    # Calculates total time listened 
+# Calculates total time listened 
 def time_calc(time_data, time_meta):
     time_tuples  = counter(time_meta, time_data)
     time_multiplied = []
@@ -229,16 +217,6 @@ def streaming_ext():
                     summary_data[stream_year] = [item]
                 else:
                     summary_data[stream_year].append(item)
-#    def time_calc(time_data):
-#        time_tuples  = counter('ms_played', time_data)
-#        time_multiplied = []
-#        for i in range(len(time_tuples)):
-#            multiplied = time_tuples[i][0] * time_tuples[i][1]
-#            time_multiplied.append(multiplied)
-#        time_ms = sum(time_multiplied)
-#        time_listened = time_ms // 1000 // 60
-#        return time_listened
-
     print('------*------')
     print('How many results do you want?\n')
     f'Enter "0" for ALL; Otherwise input a number \n'

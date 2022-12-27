@@ -1,4 +1,6 @@
 # This is simple code, and thus apt to break. srry
+
+# Imports and Globals
 import json
 from collections import Counter
 from datetime import datetime
@@ -8,7 +10,7 @@ day_of_year = int(datetime.today().strftime('%j'))
 current_year = str(datetime.today().strftime("%Y"))
 
 
-#Counts and Ranks
+# Counts and ranks
 def counter(value, data):
     list = []
     length = len(data)
@@ -25,7 +27,7 @@ def counter(value, data):
     
     return sort_list
 
-#Prints Results
+# Prints results
 def printer(sorted_list, number, criteria, type, time):
     print('=============***=============')
     if type == 'streaming':
@@ -49,23 +51,39 @@ def printer(sorted_list, number, criteria, type, time):
                 print(f'{item[1]} -- {item[0]}')
         print('\n')
 
-#Processes Streaming
+# Calculates total time listened 
+def time_calc(time_data, time_meta):
+    time_tuples  = counter(time_meta, time_data)
+    time_multiplied = []
+    for i in range(len(time_tuples)):
+        multiplied = time_tuples[i][0] * time_tuples[i][1]
+        time_multiplied.append(multiplied)
+    time_ms = sum(time_multiplied)
+    time_listened = time_ms // 1000 // 60
+    return time_listened
+
+# Processes streaming (year)
 def streaming():
+
+    # Variables 
     directory = 'MyData'
     time_meta = 'msPlayed'
     data = []
+    time_data = []
+    streaming_data = {}
+
     # Converts JSON into dict, stores in  list
     for filename in glob.iglob(f'{directory}/StreamingHistory*.json'):
         with open(filename, encoding="UTF-8") as f:
             filenames = json.load(f)
             data.append(filenames)
     
-    time_data = []
-    summary_data = {}
+    # User inputs
+        
+        # Criteria
     print(f'Sort By: \n\n'
     f'~# 1  --  Artist \n'
     f'~# 2  --  Track\n\n')
-
     choice = (input('~# '))
     if choice == '1':
         criteria = ('artistName', 'Artist')
@@ -74,6 +92,8 @@ def streaming():
     else:
         print('Wrong Answer!')
         return
+        
+        # Time frame
     print(f'Time Frame: \n\n'
     f'~# 1  --  Search the Past Year\n'
     f'~# 2  --  Search the Past Month\n'
@@ -83,17 +103,25 @@ def streaming():
     time_choice = (input('~# '))
     if time_choice == '3':
         month_input = (input('Enter in the MM as YYYY-MM (include the dash)::  '))
-        months = {'01':[],'02':[],'03':[],'04':[],'05':[],'06':[],'07':[],'08':[],'09':[],'10':[],'11':[],'12':[]}
     elif time_choice == '1' or time_choice == '2' or time_choice == '4' or time_choice == '5':
         pass
     else:
         print('Wrong answer!')
         return
-
+    
+        # Number of results
+    print('------*------')
+    print('How many results do you want?\n')
+    f'Enter "0" for ALL; Otherwise input a number \n'
+    num = int(input('~# '))
+    print('Hacking....\n\n')
+    
     streaming_length = (len(data))
-    for i in range(streaming_length):       # Starts iterating through Streaming
-        for item in data[i]:            # Each streaming song is a data[i] 
-            y = datetime.strptime(item['endTime'], "%Y-%m-%d %H:%M").date() # Forces data into standard format
+
+    # Iterates through data 
+    for i in range(streaming_length):       
+        for item in data[i]:                                                    # Each streaming song is a data[i] 
+            y = datetime.strptime(item['endTime'], "%Y-%m-%d %H:%M").date()     # Forces data into standard format
             year_day = int(y.strftime("%j"))
             year_month = y.strftime("%Y-%m")
             stream_month = y.strftime("%m")
@@ -117,43 +145,28 @@ def streaming():
                     summary_data[stream_month] = [item]
                 else:
                     summary_data[stream_month].append(item)
-    print('------*------')
-    print('How many results do you want?\n')
-    f'Enter "0" for ALL; Otherwise input a number \n'
-    num = int(input('~# '))
-    print('Hacking....\n\n')
+    
+    # Sends data to counter and printer
     if time_choice == '5':
-        sumsort = {key:summary_data[key] for key in sorted(summary_data.keys())}
+        sumsort = {key:summary_data[key] for key in sorted(summary_data.keys())}    # Puts months in order
         for every_month in sumsort.keys():
             month_name = datetime.strptime(every_month, "%m").strftime("%B")
             printer(counter(criteria[0], sumsort[every_month]), num, month_name, 'streaming',time_calc(sumsort[every_month], time_meta))
     else:
         printer(counter(criteria[0], time_data), num, criteria[1], 'streaming', time_calc(time_data, time_meta))
 
-# Calculates total time listened 
-def time_calc(time_data, time_meta):
-    time_tuples  = counter(time_meta, time_data)
-    time_multiplied = []
-    for i in range(len(time_tuples)):
-        multiplied = time_tuples[i][0] * time_tuples[i][1]
-        time_multiplied.append(multiplied)
-    time_ms = sum(time_multiplied)
-    time_listened = time_ms // 1000 // 60
-    return time_listened
-
+# Processes streaming (account history)
 def streaming_ext():
+
+    # Variables
     directory = 'MyDataExtended'
     time_meta = 'ms_played'
     data = []
-    # Converts JSON into dict, stores in list
-    for filename in glob.iglob(f'{directory}/endsong*.json'):
-        with open(filename, encoding="UTF-8") as w:
-            filenames = json.load(w)
-            data.append(filenames)
-
     time_data = []
     summary_data = {}
 
+    # User inputs
+        # Criteria
     print(f'Sort By: \n\n'
     f'~# 1  --  Artist \n'
     f'~# 2  --  Track  \n'
@@ -168,7 +181,8 @@ def streaming_ext():
     else:
         print('Wrong answer!')
         return
-
+    
+        # Time frame
     print(f'Time Frame: \n\n'
     f'~# 1  --  Search All of Time\n'
     f'~# 2  --  Search by Month\n'
@@ -187,28 +201,41 @@ def streaming_ext():
     else:
         print('Wrong answer!')
         return
+    
+        # Number of results
+    print('------*------')
+    print('How many results do you want?\n')
+    f'Enter "0" for ALL; Otherwise input a number \n'
+    num = int(input('~# '))
+    print('Hacking....[this may take some time]\n\n')
     streaming_length = (len(data))
     
-
-    for i in range(streaming_length):       # Starts iterating through Streaming
-        for item in data[i]:            # Each streaming song is a data[i] or item
-            y = datetime.strptime(item['ts'], "%Y-%m-%dT%H:%M:%SZ").date() # Forces data into standard format
+    # Converts JSON into dict, stores in list
+    for filename in glob.iglob(f'{directory}/endsong*.json'):
+        with open(filename, encoding="UTF-8") as w:
+            filenames = json.load(w)
+            data.append(filenames)
+    
+    # Iterates through data 
+    for i in range(streaming_length):
+        for item in data[i]:                                                        # Each streaming song is a data[i] or item
+            y = datetime.strptime(item['ts'], "%Y-%m-%dT%H:%M:%SZ").date()          # Forces data into standard format
+            
+            # Datetime variables
             year_day = int(y.strftime("%j"))
             year_month = y.strftime("%Y-%m")
             stream_month = y.strftime("%m")
             stream_year = y.strftime("%Y") 
             
+            # Creates list of requested data
             if time_choice == '1':
                 time_data.append(item)
-
             elif time_choice == '2':
                 if month_input == stream_month:
                     time_data.append(item)
-
             elif time_choice == '3':
                 if month_input == year_month:
                     time_data.append(item)       
-            
             elif time_choice == '4':
                 if year_input == stream_year:
                     time_data.append(item)
@@ -217,19 +244,16 @@ def streaming_ext():
                     summary_data[stream_year] = [item]
                 else:
                     summary_data[stream_year].append(item)
-    print('------*------')
-    print('How many results do you want?\n')
-    f'Enter "0" for ALL; Otherwise input a number \n'
-    num = int(input('~# '))
-    print('Hacking....[this may take some time]\n\n')
+    
+    # Sends data to counter and printer
     if time_choice == '5':
-        sumsort = {key:summary_data[key] for key in sorted(summary_data.keys())}
+        sumsort = {key:summary_data[key] for key in sorted(summary_data.keys())}    # Puts years in order
         for every_year in sumsort.keys():
             printer(counter(criteria[0], sumsort[every_year]), num, every_year, 'streaming',time_calc(sumsort[every_year], time_meta))
     else:
         printer(counter(criteria[0], time_data), num, criteria[1], 'streaming',time_calc(time_data, time_meta))              
 
-#Retrieves Requested Playlist
+#Retrieves requested playlist
 def playlist_grabber():
     directory = 'MyData'
     data = []
@@ -271,7 +295,7 @@ def playlist_grabber():
             print('\n*** Invalid Playlist Number ***\n')
             rep = True
 
-#Processes the Playlist
+# Processes the playlist
 def playlist():
     value = playlist_grabber()
     playlist_list = []
@@ -279,19 +303,14 @@ def playlist():
         for item in value['items']:
             try:
                 playlist_list.append(item['track'])
-                
             except TypeError:
-                
                 playlist_list.append('** LOCAL SONG -- INFO UNAVAILABLE **')
     except:
         for item in value:
-            
             for title in item['items']:
                 try:
                     playlist_list.append(title['track'])
-                    
                 except TypeError:
-                    
                     playlist_list.append('** LOCAL SONG -- INFO UNAVAILABLE **')
                     
 
@@ -300,44 +319,25 @@ def playlist():
     f'~# 1  --  Artist \n'
     f'~# 2  --  Track  \n'
     f'~# 3  --  Albums \n\n')
-    try:
-        choice = int(input('~# '))
-        if choice == 1: 
-            print('\n------*------')    
-            print('How many results do you want?\n'
-            f'Enter "0" for ALL; Otherwise input a number \n')
-            num = int(input('~# '))
-                
-            print('Hacking....\n\n')
-            printer(counter('artistName', playlist_list), num, 'Artist', 'playlist', 0)
-        elif choice == 2:
-            print('\n------*------')
-            print('How many results do you want?\n'
-            f'Enter "0" for ALL; Otherwise input a number \n')
-            num = int(input('~# '))
-            
-            print('Hacking....\n\n')
-            printer(counter('trackName', playlist_list), num, 'Track', 'playlist', 0)
-            #pass
-        elif choice == 3:
-            print('\n------*------')
-            print('How many results do you want?\n'
-            f'Enter "0" for ALL; Otherwise input a number \n')
-            num = int(input('~# '))
-            
-            print('Hacking....\n\n')
-            printer(counter('albumName', playlist_list), num, 'Album', 'playlist', 0)
-        elif isinstance(choice, int) == False:
-            print('Enter a Number')
-            
-        else:
-            print(f'{choice} is invalid')
-            
-    except:
-        print('No. ')
-                
+    choice = (input('~# '))
+    if choice == '1':
+        criteria = ('artistName', 'Artist')
+    elif choice == '2':
+        criteria = ('trackName', 'Track')
+    elif choice == '3':
+        criteria = ('albumName', 'Album')
+    else:
+        print('Wrong Answer!')
+        return
+    print('\n------*------')    
+    print('How many results do you want?\n'
+    f'Enter "0" for ALL; Otherwise input a number \n')
+    num = int(input('~# '))
+    print('\n\nHacking....\n\n')
+    printer(counter(criteria[0], playlist_list), num, criteria[1], 'playlist', 0)
+               
 
-#MAIN
+# MAIN
 def main():
     repeat = True
     while repeat == True:

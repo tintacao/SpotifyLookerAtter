@@ -215,7 +215,7 @@ def streaming_ext():
     print('Hacking....[this may take some time]\n\n')
     
     # Converts JSON into dict, stores in list
-    for filename in glob.iglob(f'{directory}/endsong*.json'):
+    for filename in glob.iglob(f'{directory}/Streaming_History_Audio*.json'):
         with open(filename, encoding="UTF-8") as w:
             filenames = json.load(w)
             data.append(filenames)
